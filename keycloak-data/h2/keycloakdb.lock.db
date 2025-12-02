@@ -1,0 +1,6 @@
+#FileLock
+#Tue Dec 02 16:02:28 GMT 2025
+server=172.19.0.4\:35509
+hostName=authentication-identityserver
+method=file
+id=19adfcd0929464ba679d0e75c72320265d033e9ef27

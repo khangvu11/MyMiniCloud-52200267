@@ -1,0 +1,166 @@
+services:
+  web-frontend-server:
+    build: ./web-frontend-server
+    container_name: web-frontend-server
+    ports:
+      - "8080:80"
+    networks:
+      - cloud-net
+    restart: unless-stopped
+  web-frontend-server1:
+    build: ./web-frontend-server1
+    container_name: web-frontend-server1
+    ports:
+      - "8083:80"    # nếu muốn test trực tiếp server1
+    networks:
+      - cloud-net
+    restart: unless-stopped
+
+  web-frontend-server2:
+    build: ./web-frontend-server2
+    container_name: web-frontend-server2
+    # có thể expose cổng khác, hoặc bỏ hẳn ports cũng được
+    ports:
+      - "8082:80"
+    networks:
+      - cloud-net
+    restart: unless-stopped
+
+
+  application-backend-server:
+    build: ./application-backend-server
+    container_name: application-backend-server
+    ports:
+      - "8085:8081"
+    environment:
+      OIDC_ISSUER: "http://authentication-identity-server:8080/realms/realm_52200267"
+      OIDC_AUDIENCE: "account"
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: studentdb
+    networks:
+      - cloud-net
+    restart: unless-stopped
+
+
+
+  relational-database-server:
+    image: mariadb:11
+    container_name: db
+    hostname: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./relational-database-server/init:/docker-entrypoint-initdb.d
+      - db-data:/var/lib/mysql
+    networks:
+      - cloud-net
+    restart: unless-stopped
+
+  authentication-identity-server:
+    image: quay.io/keycloak/keycloak:22.0
+    container_name: authentication-identity-server
+    hostname: authentication-identityserver
+    command:
+      - start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8081:8080"
+    networks:
+      - cloud-net
+    restart: unless-stopped
+    volumes:
+      - ./keycloak-data:/opt/keycloak/data
+  object-storage-server:
+    image: minio/minio:latest
+    container_name: object-storage-server
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin       # user đăng nhập console
+      MINIO_ROOT_PASSWORD: minioadmin   # pass đăng nhập console
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # Web console
+    volumes:
+      - ./object-storage-server/data:/data
+
+    networks:
+      - cloud-net
+    restart: unless-stopped
+  internal-dns-server:
+    image: internetsystemsconsortium/bind9:9.18
+    container_name: internal-dns-server
+    hostname: internal-dns-server
+    ports:
+      - "1053:53/udp"
+    volumes:
+      - ./internal-dns-server/named.conf:/etc/bind/named.conf
+      - ./internal-dns-server/db.cloud.local:/etc/bind/db.cloud.local
+    networks:
+      - cloud-net
+    restart: unless-stopped
+  monitoring-node-exporter-server:
+    image: prom/node-exporter:latest
+    container_name: monitoring-node-exporter-server
+    hostname: monitoring-node-exporter-server
+    ports:
+      - "9100:9100"
+    networks:
+      - cloud-net
+    restart: unless-stopped
+
+  monitoring-prometheus-server:
+    image: prom/prometheus:latest
+    container_name: monitoring-prometheus-server
+    hostname: monitoring-prometheus-server
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring-prometheus-server/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - monitoring-node-exporter-server
+    networks:
+      cloud-net:
+        aliases:
+          - prometheus
+    restart: unless-stopped
+
+  monitoring-grafana-dashboard-server:
+    image: grafana/grafana:latest
+    container_name: monitoring-grafana-dashboard-server
+    hostname: monitoring-grafana-dashboard-server
+    ports:
+      - "3000:3000"
+    networks:
+      - cloud-net
+    depends_on:
+      - monitoring-prometheus-server
+    restart: unless-stopped
+  api-gateway-proxy-server:
+    build: ./api-gateway-proxy-server
+    container_name: api-gateway-proxy-server
+    ports:
+      - "80:80"
+    depends_on:
+      - web-frontend-server1
+      - web-frontend-server2
+      - application-backend-server
+      - authentication-identity-server
+    networks:
+      - cloud-net
+    restart: unless-stopped
+
+
+
+networks:
+  cloud-net:
+    driver: bridge
+    name: cloud-net
+
+volumes:
+  db-data:
+  keycloak-data:
+

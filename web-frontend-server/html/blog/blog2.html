@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>3 tips nhớ lâu khi làm lab Docker</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; }
+    h1 { color: #333; }
+    img { max-width: 100%; border-radius: 8px; margin: 10px 0 20px; }
+    li { margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <h1>3 tips nhớ lâu khi làm lab Docker</h1>
+  <img src="https://picsum.photos/900/300?random=2" alt="Docker Tips">
+
+  <ol>
+    <li><b>Vẽ sơ đồ trước khi viết compose:</b> hiểu rõ service nào nói chuyện với ai,
+    port nào dùng cho nội bộ, port nào publish ra ngoài.</li>
+    <li><b>Đặt tên container rõ ràng:</b> ví dụ <code>web-frontend-server</code>,
+    <code>application-backend-server</code> giúp đọc log và ping trong mạng dễ hơn.</li>
+    <li><b>Luôn kiểm tra bằng curl hoặc ping:</b> sau khi chỉnh cấu hình, dùng
+    <code>curl</code> / <code>dig</code> / <code>ping</code> để chắc chắn service hoạt động đúng.</li>
+  </ol>
+
+  <p><a href="/blog/">&larr; Quay lại danh sách blog</a></p>
+</body>
+</html>

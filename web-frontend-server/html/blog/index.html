@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>MyMiniCloud – Danh sách Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .wrapper {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    header {
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .sub {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .nav-back {
+      margin-top: 12px;
+      font-size: 13px;
+    }
+    .nav-back a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,.6);
+      font-size: 12px;
+    }
+    .nav-back a:hover {
+      background: rgba(15,23,42,.9);
+    }
+
+    .list {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .item {
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(15,23,42,.95);
+      border: 1px solid rgba(55,65,81,.9);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: border-color .12s ease, background .12s ease, transform .12s ease;
+    }
+    .item:hover {
+      border-color: #4f46e5;
+      background: radial-gradient(circle at top left,#1d2437,#020617);
+      transform: translateY(-1px);
+    }
+    .item-label {
+      font-size: 11px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .item-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .item-desc {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+    .item-meta {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="title">MyMiniCloud – Blog</div>
+      <p class="sub">
+        Danh sách các bài viết xoay quanh hành trình tự dựng hệ thống cloud thu nhỏ và kinh nghiệm học tập.
+      </p>
+      <div class="nav-back">
+        <a href="/"><span>&larr;</span><span>Quay lại trang chủ</span></a>
+      </div>
+
+<!-- Nút mới điều hướng sang Student Portal -->
+      <div class="nav-back" style="margin-top: 12px;">
+        <a href="/student.html"><span>🎓</span><span>Student Portal</span></a>
+      </div>
+
+      
+    </header>
+
+    <main class="list">
+      <a class="item" href="/blog/blog1.html">
+        <div class="item-label">Cloud journey</div>
+        <div class="item-title">Hành trình học Cloud &amp; Docker</div>
+        <div class="item-desc">
+          Tìm hiểu các khái niệm cơ bản và lý do vì sao Docker giúp việc triển khai MyMiniCloud trở nên đơn giản.
+        </div>
+        <div class="item-meta">~ 3 phút đọc · Cloud, Docker</div>
+      </a>
+
+      <a class="item" href="/blog/blog2.html">
+        <div class="item-label">Lab note</div>
+        <div class="item-title">3 tips nhớ lâu khi làm lab Docker</div>
+        <div class="item-desc">
+          Ghi chú lại những mẹo nhỏ giúp làm lab nhanh hơn, ít lỗi hơn và dễ debug hơn khi dùng docker-compose.
+        </div>
+        <div class="item-meta">~ 2 phút đọc · Thực hành</div>
+      </a>
+
+      <a class="item" href="/blog/blog3.html">
+        <div class="item-label">Study</div>
+        <div class="item-title">Cách mình ôn thi cuối kỳ môn Điện toán đám mây</div>
+        <div class="item-desc">
+          Chiến lược kết hợp giữa đọc slide, xem lại lab và dùng chính project MyMiniCloud để ôn thi.
+        </div>
+        <div class="item-meta">~ 4 phút đọc · Study notes</div>
+      </a>
+    </main>
+  </div>
+</body>
+</html>
